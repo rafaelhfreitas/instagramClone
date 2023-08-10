@@ -54,4 +54,14 @@ export class AccessComponent implements OnInit {
     this.register = event === 'register' ? true : false;
   }
 
+
+  public animationStart(): void {
+    console.log('Inicio da animação')
+  }
+
+
+  public animationEnd(): void {
+    console.log('Fim da animação')
+  }
+
 }

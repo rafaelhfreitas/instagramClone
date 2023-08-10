@@ -5,13 +5,21 @@
     </div>
 
     <div *ngIf="register; else formLogin">
-      <div class="col-sm-6 d-flex justify-content-start" [@panel-animation]="panelState">
+      <div class="col-sm-6 d-flex justify-content-start" 
+        [@panel-animation]="panelState" 
+        (@panel-animation.start)="animationStart()"
+        (@panel-animation.done)="animationEnd()"
+      >
         <app-register (showPanel)="showPanel($event)"></app-register>
       </div>        
     </div>
 
     <ng-template #formLogin>
-      <div class="col-sm-6 d-flex justify-content-start" [@panel-animation]="panelState">
+      <div class="col-sm-6 d-flex justify-content-start" 
+        [@panel-animation]="panelState"
+        (@panel-animation.start)="animationStart()"
+        (@panel-animation.done)="animationEnd()"
+      >
         <app-login (showPanel)="showPanel($event)"></app-login>
       </div>  
     </ng-template>

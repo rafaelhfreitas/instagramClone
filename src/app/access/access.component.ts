@@ -32,9 +32,16 @@ export class AccessComponent implements OnInit {
   public bannerState: string = 'created';
   public panelState: string = 'created';
 
+  public register: boolean = false;
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  public showPanel(event: string): void {
+    console.log('Evento recebido pelo comp filho: ', event);
+    this.register = event === 'register' ? true : false;
   }
 
 }

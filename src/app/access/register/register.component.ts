@@ -1,6 +1,10 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
+import { User } from '../user.model';
+
+import { AuthService } from '../../auth.service';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -18,7 +22,7 @@ export class RegisterComponent implements OnInit {
     'password': new FormControl(null , [Validators.required])
   })
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }
@@ -32,6 +36,13 @@ export class RegisterComponent implements OnInit {
 
   public userRegister(): void {
     console.log(this.form);
+
+    let user: User = new User(
+      this.form.value.email,
+      this.form.value.fullName, 
+      this.form.value.login, 
+      this.form.value.password);
+    this.authService.userRegister(user);
   }
 
 }

@@ -36,10 +36,29 @@ export class AuthService {
                 firebase.auth().currentUser.getIdToken()
                     .then( (idToken: string) => {
                         this.tokenId = idToken;
+                        localStorage.setItem('idToken', idToken);
                         this.router.navigate(['/home']);
                     })
             })
             .catch((error: Error) => console.log(error))
+
+    }
+
+
+    public authenticated(): boolean {
+
+        if (this.tokenId === undefined && localStorage.getItem('idToken') != null ){
+            this.tokenId = localStorage.getItem('idToken');
+        }
+
+        return this.tokenId !== undefined
+
+    }
+
+
+    public logout():void {
+
+        localStorage.removeItem('idToken')
 
     }
 }

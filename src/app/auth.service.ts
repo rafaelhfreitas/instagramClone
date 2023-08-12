@@ -1,13 +1,24 @@
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+
 import { User } from "./access/user.model";
 import * as firebase from 'firebase';
 
+@Injectable()
 export class AuthService {
+
+
+    public tokenId: string 
+
+    constructor(
+        private router: Router
+    ){}
     
     
-    public userRegister(user: User): void {
+    public userRegister(user: User): Promise<any> {
         //console.log('serviço de autenticação: ', user);
 
-        firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+        return firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
             .then((response: any) => {
                 // console.log(response);
                 delete user.password;
@@ -21,7 +32,13 @@ export class AuthService {
     public authenticate(email: string, password: string): void {
 
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .then((response: any) => console.log(response))
+            .then((response: any) => {
+                firebase.auth().currentUser.getIdToken()
+                    .then( (idToken: string) => {
+                        this.tokenId = idToken;
+                        this.router.navigate(['/home']);
+                    })
+            })
             .catch((error: Error) => console.log(error))
 
     }

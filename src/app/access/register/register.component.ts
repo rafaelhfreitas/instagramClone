@@ -42,7 +42,8 @@ export class RegisterComponent implements OnInit {
       this.form.value.fullName, 
       this.form.value.login, 
       this.form.value.password);
-    this.authService.userRegister(user);
+    this.authService.userRegister(user)
+      .then(() => this.showLoginPanel());
   }
 
 }

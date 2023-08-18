@@ -17,6 +17,7 @@ import { RegisterComponent } from './access/register/register.component';
 import { AuthService } from './auth.service';
 import { HomeComponent } from './home/home.component';
 import { FeedComponent } from './home/feed/feed.component';
+import { AuthGuard } from './auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { FeedComponent } from './home/feed/feed.component';
     ReactiveFormsModule,
     RouterModule.forRoot(ROUTES)
   ],
-  providers: [AuthService],
+  providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

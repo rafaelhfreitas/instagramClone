@@ -14,6 +14,8 @@ export class LoginComponent implements OnInit {
 
   @Output() public showPanel: EventEmitter<string> = new EventEmitter<string>();
 
+  public errorMessage: string;
+
   public form: FormGroup = new FormGroup({
     'email': new FormControl(null),
     'password': new FormControl(null)
@@ -32,7 +34,10 @@ export class LoginComponent implements OnInit {
 
   public authenticate(): void {
     //console.log(this.form);
-    this.authService.authenticate(this.form.value.email, this.form.value.password);
+    this.authService.authenticate(this.form.value.email, this.form.value.password)
+      .then(() => {
+        this.errorMessage = this.authService.message;
+      });
   }
 
 }

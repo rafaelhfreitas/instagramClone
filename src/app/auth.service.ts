@@ -9,6 +9,7 @@ export class AuthService {
 
 
     public tokenId: string 
+    public message: string
 
     constructor(
         private router: Router
@@ -25,21 +26,51 @@ export class AuthService {
                 firebase.database().ref(`userDetail/${btoa(user.email)}`)
                     .set(user);
             })
-            .catch((error: Error) => console.log(error));
+            .catch((error: Error) =>  console.log(error));
     }
 
 
-    public authenticate(email: string, password: string): void {
+    public authenticate(email: string, password: string): Promise<any> {
 
-        firebase.auth().signInWithEmailAndPassword(email, password)
+        return firebase.auth().signInWithEmailAndPassword(email, password)
             .then((response: any) => {
                 firebase.auth().currentUser.getIdToken()
                     .then( (idToken: string) => {
                         this.tokenId = idToken;
+                        localStorage.setItem('idToken', idToken);
                         this.router.navigate(['/home']);
                     })
             })
-            .catch((error: Error) => console.log(error))
+            .catch((error: Error) => {
+                this.message = error.message;
+                console.log(error);
+            });
+
+    }
+
+
+    public authenticated(): boolean {
+
+        if (this.tokenId === undefined && localStorage.getItem('idToken') != null ){
+            this.tokenId = localStorage.getItem('idToken');
+        }
+
+        if (this.tokenId === undefined) {
+            this.router.navigate(['/']);
+        }
+
+        return this.tokenId !== undefined
+
+    }
+
+
+    public logout():void {
+        firebase.auth().signOut().then(() => {
+            localStorage.removeItem('idToken');
+            this.tokenId = undefined;
+            this.router.navigate(['/'])
+        })
+        
 
     }
 }

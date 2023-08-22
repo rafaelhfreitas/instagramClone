@@ -46,7 +46,7 @@ export class AddContentComponent implements OnInit {
       image: this.image[0]
     });
 
-    let uploadProgress = Observable.interval(1500);
+    let uploadProgress = Observable.interval(1000);
     let nextEvent = new Subject();
 
     nextEvent.next(true);

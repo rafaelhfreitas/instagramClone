@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
+import * as firebase from 'firebase';
+
+import { RepositoryService } from '../../repository.service';
+
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.component.html',
@@ -7,9 +11,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FeedComponent implements OnInit {
 
-  constructor() { }
+
+  public email: string;
+
+  constructor(
+    private repositoryService: RepositoryService
+  ) { }
 
   ngOnInit() {
+    firebase.auth().onAuthStateChanged((user) => {
+      this.email = user.email;
+      this.updateFeed();
+    })
+
+  }
+
+
+  public updateFeed(): void {
+    this.repositoryService.getContent(this.email)
   }
 
 }

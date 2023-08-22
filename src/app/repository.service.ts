@@ -53,11 +53,17 @@ export class RepositoryService {
                     let contents: Array<any> = [];
 
                     snapshot.forEach((childSnapshot: any) => {
-
                         let content = childSnapshot.val();
+                        content.key = childSnapshot.key;
+                        contents.push(content)
+                    })
+                    
+                    return contents.reverse();
+                }).then((contents:any) => {
 
+                    contents.forEach((content) => {
                         firebase.storage().ref()
-                            .child(`images/${childSnapshot.key}`)
+                            .child(`images/${content.key}`)
                             .getDownloadURL()
                             .then((url: string) => {
                                 content.imageUrl = url;
@@ -66,12 +72,12 @@ export class RepositoryService {
                                     .then((snapshot: any) => {
                                         content.userName = snapshot.val().fullName;
                                         contents.push(content);
-                                    })
-                            })
-                    });
-            resolve(contents);
-            })
-        })
+                                    });
+                            });
+                    });                    
+                    resolve(contents);
+                });
+        });
 
     }
 }

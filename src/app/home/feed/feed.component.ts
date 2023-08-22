@@ -13,6 +13,7 @@ export class FeedComponent implements OnInit {
 
 
   public email: string;
+  public contents: any;
 
   constructor(
     private repositoryService: RepositoryService
@@ -29,6 +30,9 @@ export class FeedComponent implements OnInit {
 
   public updateFeed(): void {
     this.repositoryService.getContent(this.email)
+      .then((contents: any) => {
+        this.contents = contents;
+      })
   }
 
 }

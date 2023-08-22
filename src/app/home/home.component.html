@@ -10,6 +10,6 @@
 
 <br /><br /><br />
 <div class="container">
-  <app-feed></app-feed>   
-  <app-add-content></app-add-content>
+  <app-feed #contents></app-feed>   
+  <app-add-content (updateFeed)="updateFeed()"></app-add-content>
 </div>

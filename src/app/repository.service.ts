@@ -40,25 +40,44 @@ export class RepositoryService {
             })
     }
 
-    public getContent(email: string): any {
-
-        firebase.database().ref(`feed/${btoa(email)}`)
-            .once('value')
-            .then((snapshot: any) => {
-                console.log(snapshot.val());
+    public getContent(email: string): Promise<any> {
 
 
-                let contents: Array<any> = [];
+        return new Promise((resolve, reject) => {
+            firebase.database().ref(`feed/${btoa(email)}`)
+                .orderByKey()
+                .once('value')
+                .then((snapshot: any) => {
+                    console.log(snapshot.val());
 
-                snapshot.forEach((childSnapshot: any) => {
-                    firebase.storage().ref()
-                        .child(`images/${childSnapshot.key}`)
-                        .getDownloadURL()
-                        .then((url: string) => {
-                            console.log(url);
-                        })
+                    let contents: Array<any> = [];
+
+                    snapshot.forEach((childSnapshot: any) => {
+                        let content = childSnapshot.val();
+                        content.key = childSnapshot.key;
+                        contents.push(content)
+                    })
+                    
+                    return contents.reverse();
+                }).then((contents:any) => {
+
+                    contents.forEach((content) => {
+                        firebase.storage().ref()
+                            .child(`images/${content.key}`)
+                            .getDownloadURL()
+                            .then((url: string) => {
+                                content.imageUrl = url;
+                                firebase.database().ref(`userDetail/${btoa(email)}`)
+                                    .once('value')
+                                    .then((snapshot: any) => {
+                                        content.userName = snapshot.val().fullName;
+                                        contents.push(content);
+                                    });
+                            });
+                    });                    
+                    resolve(contents);
                 });
-            })
+        });
 
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 
 import * as firebase from 'firebase';
@@ -15,6 +15,9 @@ import { ProgressService } from '../../progress.service';
   styleUrls: ['./add-content.component.css']
 })
 export class AddContentComponent implements OnInit {
+
+
+  @Output() public updateFeed: EventEmitter<any> = new EventEmitter<any>();
 
   public email : string;
   private image: any;
@@ -63,6 +66,10 @@ export class AddContentComponent implements OnInit {
 
         if (this.progressService.status === 'Finished') {
           this.progressContent = 'finished';
+
+          // emit a parent event (home)
+          this.updateFeed.emit();
+
           nextEvent.next(false);
         }
     })

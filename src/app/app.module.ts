@@ -12,12 +12,14 @@ import { AccessComponent } from './access/access.component';
 import { BannerComponent } from './access/banner/banner.component';
 import { LoginComponent } from './access/login/login.component';
 import { RegisterComponent } from './access/register/register.component';
-
-
-import { AuthService } from './auth.service';
 import { HomeComponent } from './home/home.component';
 import { FeedComponent } from './home/feed/feed.component';
 import { AuthGuard } from './auth-guard.service';
+import { AddContentComponent } from './home/add-content/add-content.component';
+
+import { AuthService } from './auth.service';
+import { RepositoryService } from './repository.service';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { AuthGuard } from './auth-guard.service';
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    FeedComponent
+    FeedComponent,
+    AddContentComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,7 @@ import { AuthGuard } from './auth-guard.service';
     ReactiveFormsModule,
     RouterModule.forRoot(ROUTES)
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [AuthService, AuthGuard, RepositoryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

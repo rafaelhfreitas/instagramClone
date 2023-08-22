@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
+
+  @ViewChild('contents') public contents: any;
 
   constructor(
     private authService: AuthService
@@ -18,6 +21,11 @@ export class HomeComponent implements OnInit {
   public logout(): void {
     this.authService.logout();
   
+  }
+
+
+  public updateFeed(): void {
+    this.contents.updateFeed();
   }
 
 }

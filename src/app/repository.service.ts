@@ -10,7 +10,17 @@ export class RepositoryService {
 
         firebase.storage().ref()
             .child(`images/${imageName}`)
-            .put(publish.image);
+            .put(publish.image)
+            .on(firebase.storage.TaskEvent.STATE_CHANGED,
+                (snapshot: any) => {
+                    console.log(snapshot);
+                },
+                (error) => {
+                    console.log(error);
+                },
+                () => {
+                    console.log('upload completo')
+                });
 
 
         /*

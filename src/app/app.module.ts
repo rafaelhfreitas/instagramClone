@@ -19,6 +19,7 @@ import { AddContentComponent } from './home/add-content/add-content.component';
 
 import { AuthService } from './auth.service';
 import { RepositoryService } from './repository.service';
+import { ProgressService } from './progress.service';
 
 
 @NgModule({
@@ -38,7 +39,7 @@ import { RepositoryService } from './repository.service';
     ReactiveFormsModule,
     RouterModule.forRoot(ROUTES)
   ],
-  providers: [AuthService, AuthGuard, RepositoryService],
+  providers: [AuthService, AuthGuard, RepositoryService, ProgressService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
